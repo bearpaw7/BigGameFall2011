@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using BigGameF2011.Collisions;
 
 namespace BigGameF2011.GameObjects
 {
@@ -19,13 +20,10 @@ namespace BigGameF2011.GameObjects
         //      Controls
         Keys moveUP; Keys moveDN; Keys moveLT; Keys moveRT; Keys shoot;
         KeyboardState keyState;
-        //      Drawing
-        private Texture2D texture;
 
         //Constructor
         public Player(Vector2 Position) : base(Position)
         {
-            Size = new Vector2(50, 50);
             Speed = 10;
 
             //We can later add a parameter to change controls, but use KB for now
@@ -40,6 +38,20 @@ namespace BigGameF2011.GameObjects
         public override void Load(ContentManager Content)
         {
             texture = Content.Load<Texture2D>("Sprites/ExampleShip");
+            base.Load(Content);
+            Shmup.collisions.AddCollider(collider, CollisionManager.Side.Player);
+        }
+
+        public override void Unload()
+        {
+            Shmup.collisions.RemoveCollider(collider);
+            base.Unload();
+        }
+
+        public override void OnCollision()
+        {
+            //Unload();
+            base.OnCollision();
         }
 
         public override void Update()
@@ -47,15 +59,10 @@ namespace BigGameF2011.GameObjects
             Direction = Vector2.Zero;
 
             keyState = Keyboard.GetState();
-            if (keyState.IsKeyDown(moveDN))
-                Direction.Y++;
-            else if (keyState.IsKeyDown(moveUP))
-                Direction.Y--;
-            if (keyState.IsKeyDown(moveRT))
-                Direction.X++;
-            else if (keyState.IsKeyDown(moveLT))
-                Direction.X--;
-
+            if (keyState.IsKeyDown(moveDN))         Direction.Y++;
+            else if (keyState.IsKeyDown(moveUP))    Direction.Y--;
+            if (keyState.IsKeyDown(moveRT))         Direction.X++;
+            else if (keyState.IsKeyDown(moveLT))    Direction.X--;
             Direction.Normalize();
 
             if (keyState.IsKeyUp(moveLT) && keyState.IsKeyUp(moveRT) &&
@@ -64,6 +71,11 @@ namespace BigGameF2011.GameObjects
             else
                 Velocity = Direction * Speed;
             base.Update();
+            
+            //Clamp player's movements so that they can't go off screen.
+            Position = new Vector2(
+                MathHelper.Clamp(Position.X, 0+(texture.Width/2), Shmup.SCREEN_WIDTH-(texture.Width/2)),
+                MathHelper.Clamp(Position.Y, 0+(texture.Height/2), Shmup.SCREEN_HEIGHT-(texture.Height/2)));
         }
 
         public override void Draw(GameTime gameTime)

@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using BigGameF2011.Collisions;
 
 namespace BigGameF2011.GameObjects
 {
@@ -15,6 +16,9 @@ namespace BigGameF2011.GameObjects
     public class GameObject
     {
         //Data Members
+        //      Collision
+        protected Collider collider;
+
         //      Movement
         protected Vector2 Direction;
         protected Vector2 Position;
@@ -22,6 +26,7 @@ namespace BigGameF2011.GameObjects
 
         //      Drawing
         public Vector2 Size;
+        protected Texture2D texture;
 
         //Constructor
         protected GameObject(Vector2 Position)
@@ -29,10 +34,21 @@ namespace BigGameF2011.GameObjects
             this.Position = Position;
         }
 
-        //Virtual Functions
-        public virtual void Load(ContentManager Content) { }
+        public Vector2 GetPosition() { return Position; }
+        public void SetPosition(Vector2 pos) { Position = pos; }
 
-        public virtual void Unload() { }
+        //Virtual Functions
+        //When this is overloaded, the inheriting class MUST provide a texture!
+        public virtual void Load(ContentManager Content)
+        {
+            Size = new Vector2(texture.Width, texture.Height);
+            collider = new Collisions.Collider(this, texture);
+        }
+        public virtual void OnCollision() { }
+        public virtual void Unload()
+        {
+            Shmup.GameObjects.Remove(this);
+        }
 
         public virtual void Update() 
         { 

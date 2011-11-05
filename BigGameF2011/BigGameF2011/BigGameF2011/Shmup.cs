@@ -17,33 +17,43 @@ namespace BigGameF2011
     /// </summary>
     public class Shmup : Microsoft.Xna.Framework.Game
     {
+        //Screen Data
+        public static int SCREEN_WIDTH = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+        public static int SCREEN_HEIGHT = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+        
         //Objects used for drawing
         public static GraphicsDeviceManager graphics;
+        public static CollisionManager collisions;
         public static Shmup game;
         public static SpriteBatch spriteBatch;
 
         //Containers for objects
-        List<GameObject> objects;
+        public static List<GameObject> GameObjects;
 
         public Shmup()
         {
+            collisions = new CollisionManager(this);
+            this.Components.Add(collisions);
             graphics = new GraphicsDeviceManager(this);
+
+            graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
+            graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
+            graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
 
-            objects = new List<GameObject>();
+            GameObjects = new List<GameObject>();
         }
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
+        /// related content.  Calling base.Initialize wisll enumerate through any components
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            objects.Add(new Player(new Vector2(100, 100)));
-
+            GameObjects.Add(new Player(new Vector2(100, 200)));
+            GameObjects.Add(new Enemy(new Vector2(200, 200)));
             base.Initialize();
         }
 
@@ -57,8 +67,8 @@ namespace BigGameF2011
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Load sprites for our game objects
-            for (int i = 0; i < objects.Count(); i++)
-                objects[i].Load(Content);
+            foreach(GameObject obj in GameObjects)
+                obj.Load(Content);
         }
 
         /// <summary>
@@ -67,8 +77,8 @@ namespace BigGameF2011
         /// </summary>
         protected override void UnloadContent()
         {
-            for (int i = 0; i < objects.Count(); i++)
-                objects[i].Unload();
+            for(int i = GameObjects.Count(); i != 0; i--)
+                GameObjects[i-1].Unload();
         }
 
         /// <summary>
@@ -84,8 +94,8 @@ namespace BigGameF2011
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            for (int i = 0; i < objects.Count(); i++)
-                objects[i].Update();
+            foreach (GameObject obj in GameObjects)
+                obj.Update();
 
             base.Update(gameTime);
         }
@@ -99,8 +109,8 @@ namespace BigGameF2011
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            for (int i = 0; i < objects.Count(); i++)
-                objects[i].Draw(gameTime);
+            foreach (GameObject obj in GameObjects)
+                obj.Draw(gameTime);
             spriteBatch.End();
 
             base.Draw(gameTime);
