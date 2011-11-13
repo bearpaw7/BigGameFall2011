@@ -20,10 +20,10 @@ namespace BigGameF2011
         //Screen Data
         public static int SCREEN_WIDTH = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
         public static int SCREEN_HEIGHT = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-        
+
         //Objects used for drawing
-        public static GraphicsDeviceManager graphics;
         public static CollisionManager collisions;
+        public static GraphicsDeviceManager graphics;
         public static Shmup game;
         public static SpriteBatch spriteBatch;
 
@@ -38,7 +38,7 @@ namespace BigGameF2011
 
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             Content.RootDirectory = "Content";
 
             GameObjects = new List<GameObject>();
