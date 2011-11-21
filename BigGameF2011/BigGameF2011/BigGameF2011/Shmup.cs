@@ -26,6 +26,7 @@ namespace BigGameF2011
         public static GraphicsDeviceManager graphics;
         public static Shmup game;
         public static SpriteBatch spriteBatch;
+  
 
         //Containers for objects
         public static List<GameObject> GameObjects;
@@ -52,6 +53,7 @@ namespace BigGameF2011
         /// </summary>
         protected override void Initialize()
         {
+            GameObjects.Add(new Background(new Vector2(0, 0)));
             GameObjects.Add(new Player(new Vector2(100, 200)));
             GameObjects.Add(new Enemy(new Vector2(200, 200)));
             base.Initialize();
@@ -93,6 +95,7 @@ namespace BigGameF2011
                 this.Exit();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+            
 
             foreach (GameObject obj in GameObjects)
                 obj.Update();
@@ -109,6 +112,7 @@ namespace BigGameF2011
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
+            
             foreach (GameObject obj in GameObjects)
                 obj.Draw(gameTime);
             spriteBatch.End();
