@@ -19,7 +19,7 @@ namespace BigGameF2011.GameObjects
         //Public Functions
         public override void Load(ContentManager Content)
         {
-            texture = Content.Load<Texture2D>("Sprites/ExampleShip");
+            texture = Content.Load<Texture2D>("Sprites/ExampleShip2");
             base.Load(Content);
             Shmup.collisions.AddCollider(collider, CollisionManager.Side.Enemy);
         }
