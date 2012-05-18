@@ -19,7 +19,7 @@ namespace BigGameF2011
     {
         //Screen Data  (80% of available screen)
         public static int SCREEN_WIDTH = (int)( 0.8 * GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width);
-        public static int SCREEN_HEIGHT = (int) (0.8 * GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+        public static int SCREEN_HEIGHT = (int)(0.8 * GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
         //Objects used for drawing
         public static CollisionManager collisions;

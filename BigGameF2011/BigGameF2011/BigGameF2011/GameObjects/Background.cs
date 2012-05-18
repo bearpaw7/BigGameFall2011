@@ -19,6 +19,8 @@ namespace BigGameF2011.GameObjects
         Vector2 Pos1, Pos2, Pos3, Cloud_Pos1, Cloud_Pos2, Cloud_Pos3;
         Texture2D Texture1, Texture2, Texture3, Cloud1, Cloud2, Cloud3;
 
+        SoundEffect warMusicMp3;
+
         public Background(Vector2 pos1) : base(pos1)
         {
             ScrollVel = (float)3;
@@ -31,6 +33,9 @@ namespace BigGameF2011.GameObjects
             Texture1 = Content.Load<Texture2D>("Backgrounds/Background1");
             Texture2 = Content.Load<Texture2D>("Backgrounds/Background2");
             Texture3 = Content.Load<Texture2D>("Backgrounds/Background3");
+//            Texture1 = Content.Load<Texture2D>("Backgrounds/space_A_90");
+//            Texture2 = Content.Load<Texture2D>("Backgrounds/space_B_90");
+//            Texture3 = Content.Load<Texture2D>("Backgrounds/space_C_90");
 
             Cloud1 = Content.Load<Texture2D>("Backgrounds/Clouds");
             Cloud2 = Content.Load<Texture2D>("Backgrounds/Clouds");
@@ -47,6 +52,11 @@ namespace BigGameF2011.GameObjects
 
             Cloud_Pos2.Y = Cloud_Pos1.Y - Cloud1.Height;
             Cloud_Pos3.Y = Cloud_Pos2.Y - Cloud2.Height;
+
+            /// Content Importer: MP3 Audio File - XNA Framework
+            /// Content Processor: Sound Effect - XNA Framework
+            warMusicMp3 = Content.Load<SoundEffect>("Sounds/flight_of_the_bumblebeeM");
+            warMusicMp3.Play();
 
         }
 
