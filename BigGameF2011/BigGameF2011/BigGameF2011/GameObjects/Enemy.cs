@@ -43,8 +43,37 @@ namespace BigGameF2011.GameObjects
             base.Update();
         }
 
+        private int aiPatternPosition = 0;
+
+        private void aiSquarePattern()
+        {
+            aiPatternPosition++;
+            if (aiPatternPosition < 200)
+            {
+                Position.X++;
+            }
+            else if (aiPatternPosition < 400)
+            {
+                Position.Y++;
+            }
+            else if (aiPatternPosition < 600)
+            {
+                Position.X--;
+            }
+            else if (aiPatternPosition < 800)
+            {
+                Position.Y--;
+            }
+            else
+            {
+                aiPatternPosition = 0;
+            }
+        }
+
         public override void Draw(GameTime gameTime)
         {
+            aiSquarePattern();
+
             Rectangle r = new Rectangle((int)(Position.X - Size.X / 2), (int)(Position.Y - Size.Y / 2),
                                         (int)Size.X, (int)Size.Y);
             Shmup.spriteBatch.Draw(texture, r, Color.White);
