@@ -18,7 +18,7 @@ namespace BigGameF2011
     public class Shmup : Microsoft.Xna.Framework.Game
     {
         //Screen Data  (80% of available screen)
-        public static int SCREEN_WIDTH = (int)( 0.8 * GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width);
+        public static int SCREEN_WIDTH = (int)(0.8 * GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width);
         public static int SCREEN_HEIGHT = (int)(0.8 * GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
         //Objects used for drawing
@@ -54,8 +54,8 @@ namespace BigGameF2011
         protected override void Initialize()
         {
             GameObjects.Add(new Background(new Vector2(0, 0)));
-            GameObjects.Add(new Player(new Vector2(100, 200)));
-            GameObjects.Add(new Enemy(new Vector2(200, 200)));
+            GameObjects.Add(new Player(new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.9f)));
+            GameObjects.Add(new Enemy(new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.3f)));
             base.Initialize();
         }
 

@@ -18,6 +18,7 @@ namespace BigGameF2011.GameObjects
 
         Vector2 Pos1, Pos2, Pos3, Cloud_Pos1, Cloud_Pos2, Cloud_Pos3;
         Texture2D Texture1, Texture2, Texture3, Cloud1, Cloud2, Cloud3;
+        float textureScale = 1.0f;
 
         SoundEffect warMusicMp3;
 
@@ -30,12 +31,16 @@ namespace BigGameF2011.GameObjects
 
         public override void Load(ContentManager Content)
         {
-            Texture1 = Content.Load<Texture2D>("Backgrounds/Background1");
-            Texture2 = Content.Load<Texture2D>("Backgrounds/Background2");
-            Texture3 = Content.Load<Texture2D>("Backgrounds/Background3");
-//            Texture1 = Content.Load<Texture2D>("Backgrounds/space_A_90");
-//            Texture2 = Content.Load<Texture2D>("Backgrounds/space_B_90");
-//            Texture3 = Content.Load<Texture2D>("Backgrounds/space_C_90");
+//            Texture1 = Content.Load<Texture2D>("Backgrounds/Background1");
+//            Texture2 = Content.Load<Texture2D>("Backgrounds/Background2");
+//            Texture3 = Content.Load<Texture2D>("Backgrounds/Background3");
+            Texture1 = Content.Load<Texture2D>("Backgrounds/space_A_90");
+            Texture2 = Content.Load<Texture2D>("Backgrounds/space_B_90");
+            Texture3 = Content.Load<Texture2D>("Backgrounds/space_C_90");
+            if (Texture1.Width > Shmup.SCREEN_WIDTH)
+            {
+                textureScale = (float)Shmup.SCREEN_WIDTH / (float)Texture1.Width;
+            }
 
             Cloud1 = Content.Load<Texture2D>("Backgrounds/Clouds");
             Cloud2 = Content.Load<Texture2D>("Backgrounds/Clouds");
@@ -47,8 +52,8 @@ namespace BigGameF2011.GameObjects
             Cloud_Pos2.X = Cloud_Pos1.X;
             Cloud_Pos3.X = Cloud_Pos1.X;
 
-            Pos2.Y = Pos1.Y - Texture1.Height;
-            Pos3.Y = Pos2.Y - Texture2.Height;
+            Pos2.Y = Pos1.Y - (Texture1.Height * textureScale);
+            Pos3.Y = Pos2.Y - (Texture2.Height * textureScale);
 
             Cloud_Pos2.Y = Cloud_Pos1.Y - Cloud1.Height;
             Cloud_Pos3.Y = Cloud_Pos2.Y - Cloud2.Height;
@@ -62,10 +67,14 @@ namespace BigGameF2011.GameObjects
 
         public override void Draw(GameTime gameTime)
         {
-            
-            Shmup.spriteBatch.Draw(Texture1, Pos1, Color.White);
-            Shmup.spriteBatch.Draw(Texture2, Pos2, Color.White);
-            Shmup.spriteBatch.Draw(Texture3, Pos3, Color.White);
+//            Shmup.spriteBatch.Draw(Texture1, Pos1, Color.White);
+//            Shmup.spriteBatch.Draw(Texture2, Pos2, Color.White);
+//            Shmup.spriteBatch.Draw(Texture3, Pos3, Color.White);
+
+            Shmup.spriteBatch.Draw(Texture1, Pos1, null, Color.White, 0, new Vector2(0,0), textureScale, SpriteEffects.None, 0);
+            Shmup.spriteBatch.Draw(Texture2, Pos2, null, Color.White, 0, new Vector2(0,0), textureScale, SpriteEffects.None, 0);
+            Shmup.spriteBatch.Draw(Texture3, Pos3, null, Color.White, 0, new Vector2(0,0), textureScale, SpriteEffects.None, 0);
+
             Shmup.spriteBatch.Draw(Cloud1, Cloud_Pos1, Color.White);
             Shmup.spriteBatch.Draw(Cloud2, Cloud_Pos2, Color.White);
             Shmup.spriteBatch.Draw(Cloud3, Cloud_Pos3, Color.White);
@@ -84,17 +93,17 @@ namespace BigGameF2011.GameObjects
             Cloud_Pos2.Y += (ScrollVel * 2);
             Cloud_Pos3.Y += (ScrollVel * 2);
 
-            if (Pos1.Y > Texture1.Height)
+            if (Pos1.Y > (Texture1.Height * textureScale))
             {
-                Pos1.Y = Pos3.Y - Texture3.Height;
+                Pos1.Y = Pos3.Y - (Texture3.Height * textureScale);
             }
-            if (Pos2.Y > Texture2.Height)
+            if (Pos2.Y > (Texture2.Height * textureScale))
             {
-                Pos2.Y = Pos1.Y - Texture1.Height;
+                Pos2.Y = Pos1.Y - (Texture1.Height * textureScale);
             }
-            if (Pos3.Y > Texture3.Height)
+            if (Pos3.Y > (Texture3.Height * textureScale))
             {
-                Pos3.Y = Pos2.Y - Texture2.Height;
+                Pos3.Y = Pos2.Y - (Texture2.Height * textureScale);
             }
 
             if (Cloud_Pos1.Y > Cloud1.Height)
