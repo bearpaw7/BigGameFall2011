@@ -54,8 +54,9 @@ namespace BigGameF2011
         protected override void Initialize()
         {
             GameObjects.Add(new Background(new Vector2(0, 0)));
-            GameObjects.Add(new Player(new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.9f)));
+            GameObjects.Add(new Player(new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.9f), base.Content));
             GameObjects.Add(new Enemy(new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.3f)));
+            GameObjects.Add(new Laser(new Vector2(10, 10), CollisionManager.Side.Player));
             base.Initialize();
         }
 
@@ -96,9 +97,10 @@ namespace BigGameF2011
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             
-
-            foreach (GameObject obj in GameObjects)
-                obj.Update();
+            for (int i = 0; i < GameObjects.Count(); i++)
+            {
+                GameObjects[i].Update();
+            }
 
             base.Update(gameTime);
         }

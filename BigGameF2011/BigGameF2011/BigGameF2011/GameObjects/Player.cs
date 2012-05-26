@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using BigGameF2011.Collisions;
 using Microsoft.Xna.Framework.Audio;
+using System.Diagnostics;
 
 namespace BigGameF2011.GameObjects
 {
@@ -27,17 +28,21 @@ namespace BigGameF2011.GameObjects
         SoundEffectInstance moveLoop;
         SoundEffect shotSound; 
 
+        //Content object reference
+        ContentManager content;
+
         //Constructor
-        public Player(Vector2 Position) : base(Position)
+        public Player(Vector2 Position, ContentManager _content) : base(Position)
         {
             Speed = 10;
-
+            content = _content;
             //We can later add a parameter to change controls, but use KB for now
             moveUP = Keys.Up;
             moveDN = Keys.Down;
             moveLT = Keys.Left;
             moveRT = Keys.Right;
             shoot = Keys.Space;
+
         }
 
         //Public Functions
@@ -70,7 +75,14 @@ namespace BigGameF2011.GameObjects
             Direction = Vector2.Zero;
 
             if (keyState.IsKeyDown(shoot) && lastKeyState.IsKeyUp(shoot))
+            {
                 shotSound.Play();
+                float barrelTip = this.GetPosition().Y - (texture.Height / 2) - 25;
+                Vector2 muzzle = new Vector2( this.GetPosition().X, barrelTip); 
+                Laser shotLaser = new Laser( muzzle, CollisionManager.Side.Player);
+                shotLaser.Load(this.content);
+                Shmup.GameObjects.Add(shotLaser);
+            }
 
             if (keyState.IsKeyDown(moveDN))     Direction.Y++; 
             else if (keyState.IsKeyDown(moveUP))Direction.Y--; 
