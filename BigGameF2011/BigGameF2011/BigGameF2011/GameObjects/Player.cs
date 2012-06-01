@@ -26,7 +26,8 @@ namespace BigGameF2011.GameObjects
         //Sounds
         SoundEffect moveSound;
         SoundEffectInstance moveLoop;
-        SoundEffect shotSound; 
+        SoundEffect shotSound;
+        SoundEffectInstance shotLoop;
 
         //Content object reference
         ContentManager content;
@@ -43,6 +44,7 @@ namespace BigGameF2011.GameObjects
             moveRT = Keys.Right;
             shoot = Keys.Space;
 
+            Health = 100;
         }
 
         //Public Functions
@@ -52,6 +54,8 @@ namespace BigGameF2011.GameObjects
             moveLoop = moveSound.CreateInstance();
             moveLoop.IsLooped = true;
             shotSound = Content.Load<SoundEffect>("Sounds/30935__aust-paul__possiblelazer");
+            shotLoop = shotSound.CreateInstance();
+            shotLoop.IsLooped = false;
             texture = Content.Load<Texture2D>("Sprites/ExampleShip");
             base.Load(Content);
             Shmup.collisions.AddCollider(collider, CollisionManager.Side.Player);
@@ -74,12 +78,15 @@ namespace BigGameF2011.GameObjects
             KeyboardState keyState = Keyboard.GetState();
             Direction = Vector2.Zero;
 
-            if (keyState.IsKeyDown(shoot) && lastKeyState.IsKeyUp(shoot))
+            if (keyState.IsKeyDown(shoot))//&& lastKeyState.IsKeyUp(shoot))
             {
-                shotSound.Play();
+                if(lastKeyState.IsKeyDown(shoot)){
+                    shotLoop.Stop();
+                }
+                shotLoop.Play();
                 float barrelTip = this.GetPosition().Y - (texture.Height / 2) - 25;
-                Vector2 muzzle = new Vector2( this.GetPosition().X, barrelTip); 
-                Laser shotLaser = new Laser( muzzle, CollisionManager.Side.Player);
+                Vector2 muzzle = new Vector2(this.GetPosition().X, barrelTip);
+                Laser shotLaser = new Laser(muzzle, CollisionManager.Side.Player);
                 shotLaser.Load(this.content);
                 Shmup.GameObjects.Add(shotLaser);
             }

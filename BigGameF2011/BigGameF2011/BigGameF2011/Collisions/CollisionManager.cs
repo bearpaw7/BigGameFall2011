@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using BigGameF2011.Collisions;
+using System.Diagnostics;
 
 namespace BigGameF2011
 {
@@ -28,6 +29,7 @@ namespace BigGameF2011
             PlayerColliders = new List<Collider>();
             EnemyColliders = new List<Collider>();
             base.Initialize();
+//            System.Console.WriteLine("CollisionManager initialized");
         }
 
         //Add and Remove colliders
@@ -48,27 +50,47 @@ namespace BigGameF2011
         public void RemoveCollider(Collider coll)
         {
             if (PlayerColliders.Remove(coll))
+            {
+//                Console.WriteLine("remove player collider");
                 return;
+            }
             if (EnemyColliders.Remove(coll))
+            {
+//                Console.WriteLine("remove enemy collider");
                 return;
+            }
             //This would be an error!
+            Debug.Assert(false, "Error in CollisionManager::RemoveCollider(Collider coll)");
             return;
         }
 
         //Check both sides for collisions and perform collision triggers if necessary.
         public override void Update(GameTime gameTime)
         {
-            for(int i = PlayerColliders.Count(); i > 0; i--)
+//            for (int i = PlayerColliders.Count(); i > 0; i--)
+            for (int i = 0; i < PlayerColliders.Count(); ++i)
             {
-                for (int j = EnemyColliders.Count(); j > 0; j--)
+//                for (int j = EnemyColliders.Count(); j > 0; j--)
+                for (int j = 0; j < EnemyColliders.Count(); ++j)
                 {
-                    if (PlayerColliders[i-1].isCollidingWith(EnemyColliders[j-1]))
+                    /** FIXME
+                     * PlayerColliders size is changing after most collisions.
+                     * I keep getting out of range errors and this is the best fix I
+                     * could come up with before finishing for the night.
+                     */
+                    while (i >= PlayerColliders.Count())
                     {
-                        PlayerColliders[i-1].Triggered();
-                        EnemyColliders[j-1].Triggered();
+                        --i;
                     }
-                }
-            }
+
+                    if (PlayerColliders[i].isCollidingWith(EnemyColliders[j]))
+                    {
+                        PlayerColliders[i].Triggered();
+                        EnemyColliders[j].Triggered();
+                    }
+
+                } // end enemy loop
+            } // end player loop
             base.Update(gameTime);
         }
     }

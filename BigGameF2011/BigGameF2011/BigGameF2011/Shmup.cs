@@ -26,7 +26,9 @@ namespace BigGameF2011
         public static GraphicsDeviceManager graphics;
         public static Shmup game;
         public static SpriteBatch spriteBatch;
-  
+
+        //Everybody needs a bit of entropy
+        public static Random random;
 
         //Containers for objects
         public static List<GameObject> GameObjects;
@@ -35,12 +37,16 @@ namespace BigGameF2011
         {
             collisions = new CollisionManager(this);
             this.Components.Add(collisions);
+            collisions.Initialize();
+
             graphics = new GraphicsDeviceManager(this);
 
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
             graphics.IsFullScreen = false;
             Content.RootDirectory = "Content";
+
+            random = new Random();
 
             GameObjects = new List<GameObject>();
         }
@@ -55,8 +61,9 @@ namespace BigGameF2011
         {
             GameObjects.Add(new Background(new Vector2(0, 0)));
             GameObjects.Add(new Player(new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.9f), base.Content));
-            GameObjects.Add(new Enemy(new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.3f)));
-            GameObjects.Add(new Laser(new Vector2(10, 10), CollisionManager.Side.Player));
+
+            GameObjects.Add(new Enemy(new Vector2(SCREEN_WIDTH / 3, SCREEN_HEIGHT * 0.3f), base.Content));
+            GameObjects.Add(new Laser(new Vector2(25, SCREEN_HEIGHT), CollisionManager.Side.Player));
             base.Initialize();
         }
 
@@ -96,13 +103,14 @@ namespace BigGameF2011
                 this.Exit();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            
+
             for (int i = 0; i < GameObjects.Count(); i++)
             {
                 GameObjects[i].Update();
             }
 
             base.Update(gameTime);
+//            Console.Out.WriteLine("update() :: game objects" + GameObjects.Count().ToString());
         }
 
         /// <summary>
@@ -114,9 +122,11 @@ namespace BigGameF2011
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            
-            foreach (GameObject obj in GameObjects)
-                obj.Draw(gameTime);
+
+            for (int i = 0; i < GameObjects.Count(); ++i)
+            {
+                GameObjects[i].Draw(gameTime);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);

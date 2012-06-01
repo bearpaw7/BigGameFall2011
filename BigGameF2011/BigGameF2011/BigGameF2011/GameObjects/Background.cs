@@ -42,9 +42,12 @@ namespace BigGameF2011.GameObjects
                 textureScale = (float)Shmup.SCREEN_WIDTH / (float)Texture1.Width;
             }
 
-            Cloud1 = Content.Load<Texture2D>("Backgrounds/Clouds");
-            Cloud2 = Content.Load<Texture2D>("Backgrounds/Clouds");
-            Cloud3 = Content.Load<Texture2D>("Backgrounds/Clouds");
+//            Cloud1 = Content.Load<Texture2D>("Backgrounds/Clouds");
+//            Cloud2 = Content.Load<Texture2D>("Backgrounds/Clouds");
+//            Cloud3 = Content.Load<Texture2D>("Backgrounds/Clouds");
+            Cloud1 = Content.Load<Texture2D>("Backgrounds/BlackHoles");
+            Cloud2 = Content.Load<Texture2D>("Backgrounds/BlackHoles");
+            Cloud3 = Content.Load<Texture2D>("Backgrounds/BlackHoles");
 
             Pos2.X = Pos1.X;
             Pos3.X = Pos1.X;

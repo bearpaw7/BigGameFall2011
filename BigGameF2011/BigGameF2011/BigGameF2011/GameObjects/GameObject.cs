@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using BigGameF2011.Collisions;
+using System.Diagnostics;
 
 namespace BigGameF2011.GameObjects
 {
@@ -33,7 +34,7 @@ namespace BigGameF2011.GameObjects
         {
             this.Position = Position;
         }
-
+//        public Boolean isAlive = true;
         public Vector2 GetPosition() { return Position; }
         public void SetPosition(Vector2 pos) { Position = pos; }
 
@@ -41,6 +42,7 @@ namespace BigGameF2011.GameObjects
         //When this is overloaded, the inheriting class MUST provide a texture!
         public virtual void Load(ContentManager Content)
         {
+            Debug.Assert((texture != null), "Texture has not been provided");
             Size = new Vector2(texture.Width, texture.Height);
             collider = new Collisions.Collider(this, texture);
         }
