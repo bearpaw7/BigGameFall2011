@@ -123,7 +123,7 @@ namespace BigGameF2011.GameObjects
                 }
                 else
                 {
-                    shootLaser();
+                    shootMissile();
                 }
             }
         }

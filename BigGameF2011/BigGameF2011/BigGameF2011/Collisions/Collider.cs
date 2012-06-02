@@ -27,7 +27,7 @@ namespace BigGameF2011.Collisions
             obj = go;
             Tex = gTexture;
             Vector2 ObjPos = go.GetPosition();
-            firstCollider = new Rectangle((int) ObjPos.X, (int) ObjPos.Y, Tex.Width, Tex.Height);
+            firstCollider = new Rectangle((int) (ObjPos.X-(Tex.Width/2)), (int) (ObjPos.Y-(Tex.Height/2)), Tex.Width, Tex.Height);
             secondCollider = new Color[(gTexture.Width * gTexture.Height)];
             gTexture.GetData(secondCollider);
         }
@@ -57,7 +57,7 @@ namespace BigGameF2011.Collisions
 		            them = other.secondCollider[(x - other.firstCollider.Left) +
 					            (y - other.firstCollider.Top) * other.firstCollider.Width];
 
-		            if (self.A != 0 && them.A != 0)
+                    if (self.A != 0 && them.A != 0)
 		            {
 			            return true;
 		            }
@@ -74,7 +74,13 @@ namespace BigGameF2011.Collisions
         public void UpdatePosition()
         {
             Vector2 ObjPos = obj.GetPosition();
-            firstCollider = new Rectangle((int)ObjPos.X, (int)ObjPos.Y, Tex.Width, Tex.Height);
+            firstCollider = new Rectangle((int)(ObjPos.X - (Tex.Width / 2)), (int)(ObjPos.Y - (Tex.Height / 2)), Tex.Width, Tex.Height);
+//          firstCollider = new Rectangle((int)ObjPos.X,                     (int)ObjPos.Y,                      Tex.Width, Tex.Height);
+        }
+
+        public GameObject getGameObject()
+        {
+            return obj;
         }
     }
 }

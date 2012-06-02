@@ -22,7 +22,13 @@ namespace BigGameF2011.GameObjects
 
         //Functions
         public virtual void Accelerate(float rate) { }
-        public virtual void Heal(int amount) { }
-        public virtual void Hurt(int amount) { }
+        public virtual void Heal(int amount) 
+        {
+            Health += amount;
+        }
+        public virtual void Hurt(int amount) 
+        {
+            Health -= amount;
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using BigGameF2011.Collisions;
 using System.Diagnostics;
+using BigGameF2011.GameObjects;
 
 namespace BigGameF2011
 {
@@ -29,7 +30,7 @@ namespace BigGameF2011
             PlayerColliders = new List<Collider>();
             EnemyColliders = new List<Collider>();
             base.Initialize();
-//            System.Console.WriteLine("CollisionManager initialized");
+// xc            System.Console.WriteLine("CollisionManager initialized");
         }
 
         //Add and Remove colliders
@@ -85,13 +86,23 @@ namespace BigGameF2011
 
                     if (PlayerColliders[i].isCollidingWith(EnemyColliders[j]))
                     {
+                        System.Console.WriteLine("\nPlayerColliders[" + i + "].getGameObject().GetType().ToString() => " +
+                            PlayerColliders[i].getGameObject().GetType().ToString());
+                        System.Console.WriteLine("EnemyColliders[" + j + "].getGameObject().GetType().ToString() => " +
+                            EnemyColliders[j].getGameObject().GetType().ToString());
+
                         PlayerColliders[i].Triggered();
                         EnemyColliders[j].Triggered();
                     }
 
                 } // end enemy loop
             } // end player loop
+            System.Console.WriteLine("\n*** end collision update ***");
             base.Update(gameTime);
+        }
+        public int getCombinedCount()
+        {
+            return (PlayerColliders.Count + EnemyColliders.Count);
         }
     }
 }

@@ -100,7 +100,11 @@ namespace BigGameF2011
         {
             // Exits the game if Enter or gamepad Back is pressed
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                System.Console.WriteLine("DEBUG Game Objects => " + GameObjects.Count().ToString());
+                System.Console.WriteLine("DEBUG Collision Objects => " + collisions.getCombinedCount().ToString());
                 this.Exit();
+            }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
