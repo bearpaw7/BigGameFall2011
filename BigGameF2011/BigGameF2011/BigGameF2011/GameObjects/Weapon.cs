@@ -15,6 +15,7 @@ namespace BigGameF2011.GameObjects
             : base(_pos, _side)
         {
             speed = 10;
+            damage = 5;
             if (_side == CollisionManager.Side.Player)
             {
                 textureFile = "Sprites/laserBlue";
@@ -31,6 +32,7 @@ namespace BigGameF2011.GameObjects
         {
             textureFile = "Sprites/missile";
             speed = 5;
+            damage = 20;
         }
     }
 
@@ -39,6 +41,7 @@ namespace BigGameF2011.GameObjects
         public CollisionManager.Side side;
         protected String textureFile;
         protected int speed;
+        protected int damage;
         public Weapon(Vector2 _pos, CollisionManager.Side _side) : base(_pos)
         {
             this.side = _side;
@@ -60,10 +63,15 @@ namespace BigGameF2011.GameObjects
             base.Unload();
         }
 
-        public override void OnCollision()
+        public override void OnCollision(int damageTaken)
         {
+            damage -= damageTaken;
+            if (damage > 0)
+            {
+                return;
+            }
             Unload();
-            base.OnCollision();
+            base.OnCollision(damageTaken);
         }
 
         public override void Update()
@@ -91,6 +99,11 @@ namespace BigGameF2011.GameObjects
                                         (int)Size.X, (int)Size.Y);
             Shmup.spriteBatch.Draw(texture, r, Color.White);
             base.Draw(gameTime);
+        }
+
+        public override int giveDamage()
+        {
+            return damage;
         }
 
     }

@@ -30,5 +30,11 @@ namespace BigGameF2011.GameObjects
         {
             Health -= amount;
         }
+
+        public override int giveDamage()
+        {
+            // A ship crashing into something usually gives damage proportional to how strong it has.
+            return 2 * Health;
+        }
     }
 }

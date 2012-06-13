@@ -19,6 +19,7 @@ namespace BigGameF2011.GameObjects
             Speed = 5;
             content = _content;
             Position = Pos;
+            Health = 50;
         }
 
         //Public Functions
@@ -37,25 +38,15 @@ namespace BigGameF2011.GameObjects
             base.Unload();
         }
 
-        public void spawn(){
-            Enemy badguy = new Enemy(new Vector2(-100, -100), content);
-            badguy.Load(content);
-
-            float x = (float)Shmup.random.NextDouble() * Shmup.SCREEN_WIDTH;
-            float y = -1.0f * badguy.texture.Height;
-            badguy.SetPosition(new Vector2(x, y));
-
-            Shmup.GameObjects.Add(badguy);
-        }
-
-        public override void OnCollision()
+        public override void OnCollision(int damageTaken)
         {
+            Hurt(damageTaken);
+            if (Health > 0)
+            {
+                return;
+            }
             Unload();
-            base.OnCollision();
-
-            // Ridiculous number of enemies in short time.
-            spawn();
-            spawn();
+            base.OnCollision(damageTaken);
         }
 
         public override void Update()
@@ -82,7 +73,7 @@ namespace BigGameF2011.GameObjects
             Direction = Vector2.Zero;
 
             // initial flight into viewable area
-            if (Position.Y < (1.5f * texture.Height))
+            if (Position.Y < (0.7f * texture.Height))
             {
                 Direction.Y++;
                 Velocity = Direction * Speed;
@@ -114,8 +105,8 @@ namespace BigGameF2011.GameObjects
             }
             Velocity = Direction * Speed;
 
-            int randomFire = Shmup.random.Next(100);
-            if (randomFire < 2) // shoot weapons 2% of the updates
+            int randomFire = Shmup.random.Next(1000);
+            if (randomFire < 20) // shoot weapons 2% of the updates
             {
                 if (randomFire % 2 == 0)
                 {

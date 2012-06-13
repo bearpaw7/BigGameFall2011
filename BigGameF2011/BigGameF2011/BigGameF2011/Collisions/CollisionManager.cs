@@ -86,18 +86,19 @@ namespace BigGameF2011
 
                     if (PlayerColliders[i].isCollidingWith(EnemyColliders[j]))
                     {
-                        System.Console.WriteLine("\nPlayerColliders[" + i + "].getGameObject().GetType().ToString() => " +
+/*                        System.Console.WriteLine("\nPlayerColliders[" + i + "].getGameObject().GetType().ToString() => " +
                             PlayerColliders[i].getGameObject().GetType().ToString());
                         System.Console.WriteLine("EnemyColliders[" + j + "].getGameObject().GetType().ToString() => " +
                             EnemyColliders[j].getGameObject().GetType().ToString());
-
-                        PlayerColliders[i].Triggered();
-                        EnemyColliders[j].Triggered();
+*/
+                        int playerDamage = PlayerColliders[i].getGameObject().giveDamage();
+                        PlayerColliders[i].Triggered( EnemyColliders[j].getGameObject().giveDamage());
+                        EnemyColliders[j].Triggered( playerDamage);
                     }
 
                 } // end enemy loop
             } // end player loop
-            System.Console.WriteLine("\n*** end collision update ***");
+//            System.Console.WriteLine("\n*** end collision update ***");
             base.Update(gameTime);
         }
         public int getCombinedCount()

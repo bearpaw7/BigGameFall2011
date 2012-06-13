@@ -34,7 +34,7 @@ namespace BigGameF2011.GameObjects
         {
             this.Position = Position;
         }
-//        public Boolean isAlive = true;
+
         public Vector2 GetPosition() { return Position; }
         public void SetPosition(Vector2 pos) { Position = pos; }
 
@@ -46,7 +46,7 @@ namespace BigGameF2011.GameObjects
             Size = new Vector2(texture.Width, texture.Height);
             collider = new Collisions.Collider(this, texture);
         }
-        public virtual void OnCollision() { }
+        public virtual void OnCollision(int damageTaken) { }
         public virtual void Unload()
         {
             Shmup.GameObjects.Remove(this);
@@ -59,6 +59,7 @@ namespace BigGameF2011.GameObjects
             Position.Y += Velocity.Y;
         }
 
+        public virtual int giveDamage(){ return 0;}
         public virtual void Draw(GameTime gameTime) { }
     }
 }

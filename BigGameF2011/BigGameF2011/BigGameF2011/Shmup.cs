@@ -62,7 +62,7 @@ namespace BigGameF2011
             GameObjects.Add(new Background(new Vector2(0, 0)));
             GameObjects.Add(new Player(new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.9f), base.Content));
 
-            GameObjects.Add(new Enemy(new Vector2(SCREEN_WIDTH / 3, SCREEN_HEIGHT * 0.3f), base.Content));
+            GameObjects.Add(new Enemy(new Vector2(SCREEN_WIDTH / 3, SCREEN_HEIGHT * 0.2f), base.Content));
             GameObjects.Add(new Laser(new Vector2(25, SCREEN_HEIGHT), CollisionManager.Side.Player));
             base.Initialize();
         }
@@ -91,6 +91,25 @@ namespace BigGameF2011
                 GameObjects[i-1].Unload();
         }
 
+        // elapsed time is 3 seconds in the future as a game-start buffer
+        int debugTimeElapsed = Environment.TickCount + 3000; 
+        private void debugSpawnEnemy(GameTime gameTime)
+        {
+            // minimum, maximum time between spawning enemies
+            if (Environment.TickCount - debugTimeElapsed > (random.Next(2000, 5000)))
+            {
+                Enemy badguy = new Enemy(new Vector2(-100, -100), base.Content);
+                badguy.Load(base.Content);
+
+                float x = (float)Shmup.random.NextDouble() * Shmup.SCREEN_WIDTH;
+                float y = -1.0f * 10; // badguy.texture.Height;
+                badguy.SetPosition(new Vector2(x, y));
+
+                Shmup.GameObjects.Add(badguy);
+                debugTimeElapsed = Environment.TickCount;
+            }
+        }
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -113,8 +132,8 @@ namespace BigGameF2011
                 GameObjects[i].Update();
             }
 
+            debugSpawnEnemy(gameTime);
             base.Update(gameTime);
-//            Console.Out.WriteLine("update() :: game objects" + GameObjects.Count().ToString());
         }
 
         /// <summary>

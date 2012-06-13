@@ -66,9 +66,9 @@ namespace BigGameF2011.Collisions
             return false;
         }
 
-        public void Triggered()
+        public void Triggered(int damageTaken)
         {
-            obj.OnCollision();
+            obj.OnCollision(damageTaken);
         }
 
         public void UpdatePosition()

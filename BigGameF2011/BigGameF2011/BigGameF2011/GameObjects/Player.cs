@@ -67,10 +67,16 @@ namespace BigGameF2011.GameObjects
             base.Unload();
         }
 
-        public override void OnCollision()
+        public override void OnCollision(int damageTaken)
         {
+            Hurt(damageTaken);
+            System.Console.WriteLine("Player health now " + Health.ToString());
+            if (Health > 0)
+            {
+                return;
+            }
             //Unload();
-            base.OnCollision();
+            base.OnCollision(damageTaken);
         }
 
         public override void Update()
