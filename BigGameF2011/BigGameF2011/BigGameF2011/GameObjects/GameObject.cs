@@ -21,29 +21,29 @@ namespace BigGameF2011.GameObjects
         protected Collider collider;
 
         //      Movement
-        protected Vector2 Direction;
-        protected Vector2 Position;
-        protected Vector2 Velocity;
+        protected Vector2 direction;
+        protected Vector2 position;
+        protected Vector2 velocity;
 
         //      Drawing
-        public Vector2 Size;
+        public Vector2 size;
         protected Texture2D texture;
 
         //Constructor
-        protected GameObject(Vector2 Position)
+        protected GameObject(Vector2 position)
         {
-            this.Position = Position;
+            this.position = position;
         }
 
-        public Vector2 GetPosition() { return Position; }
-        public void SetPosition(Vector2 pos) { Position = pos; }
+        public Vector2 GetPosition() { return position; }
+        public void SetPosition(Vector2 pos) { position = pos; }
 
         //Virtual Functions
         //When this is overloaded, the inheriting class MUST provide a texture!
         public virtual void Load(ContentManager Content)
         {
             Debug.Assert((texture != null), "Texture has not been provided");
-            Size = new Vector2(texture.Width, texture.Height);
+            size = new Vector2(texture.Width, texture.Height);
             collider = new Collisions.Collider(this, texture);
         }
         public virtual void OnCollision(int damageTaken) { }
@@ -55,8 +55,8 @@ namespace BigGameF2011.GameObjects
         public virtual void Update() 
         { 
             //move object based upon velocity
-            Position.X += Velocity.X;
-            Position.Y += Velocity.Y;
+            position.X += velocity.X;
+            position.Y += velocity.Y;
         }
 
         public virtual int giveDamage(){ return 0;}

@@ -13,28 +13,28 @@ namespace BigGameF2011.GameObjects
     public class Ship : GameObject
     {
         //Data Members
-        protected int Health;
-        protected float Speed;
+        protected int health;
+        protected float speed;
         //Stuff for weapons?
 
         //Constructor
-        protected Ship(Vector2 Position) : base(Position) { }
+        protected Ship(Vector2 position) : base(position) { }
 
         //Functions
         public virtual void Accelerate(float rate) { }
         public virtual void Heal(int amount) 
         {
-            Health += amount;
+            health += amount;
         }
         public virtual void Hurt(int amount) 
         {
-            Health -= amount;
+            health -= amount;
         }
 
         public override int giveDamage()
         {
             // A ship crashing into something usually gives damage proportional to how strong it has.
-            return 2 * Health;
+            return 2 * Math.Abs(health);
         }
     }
 }

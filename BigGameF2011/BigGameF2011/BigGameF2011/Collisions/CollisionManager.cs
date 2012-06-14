@@ -30,7 +30,6 @@ namespace BigGameF2011
             PlayerColliders = new List<Collider>();
             EnemyColliders = new List<Collider>();
             base.Initialize();
-// xc            System.Console.WriteLine("CollisionManager initialized");
         }
 
         //Add and Remove colliders
@@ -45,6 +44,7 @@ namespace BigGameF2011
                     EnemyColliders.Add(coll);
                     break;
                 default:
+                    System.Console.WriteLine("CollisionManager :: Neutral Collider not added");
                     break;
             }
         }
@@ -52,16 +52,14 @@ namespace BigGameF2011
         {
             if (PlayerColliders.Remove(coll))
             {
-//                Console.WriteLine("remove player collider");
                 return;
             }
             if (EnemyColliders.Remove(coll))
             {
-//                Console.WriteLine("remove enemy collider");
                 return;
             }
             //This would be an error!
-            Debug.Assert(false, "Error in CollisionManager::RemoveCollider(Collider coll)");
+            Debug.Assert(false, "CollisionManager :: RemoveCollider(Collider coll) => Collider not found.");
             return;
         }
 
@@ -98,9 +96,9 @@ namespace BigGameF2011
 
                 } // end enemy loop
             } // end player loop
-//            System.Console.WriteLine("\n*** end collision update ***");
             base.Update(gameTime);
         }
+
         public int getCombinedCount()
         {
             return (PlayerColliders.Count + EnemyColliders.Count);

@@ -1,0 +1,13 @@
+Rocket launcher explosion
+
+Source 		http://www.freesound.org/people/nthompson/sounds/47252/
+
+This work is licensed under the Sampling+ License.
+http://creativecommons.org/licenses/sampling+/1.0/
+
+Type		Wave (.wav)
+Duration	00:01:490
+Filesize	279.4 KB
+Samplerate	96000.0 Hz down-sampled to 41000
+Bitdepth	16 bit
+Channels	Mono

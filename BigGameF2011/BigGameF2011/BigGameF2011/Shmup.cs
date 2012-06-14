@@ -26,6 +26,8 @@ namespace BigGameF2011
         public static GraphicsDeviceManager graphics;
         public static Shmup game;
         public static SpriteBatch spriteBatch;
+        public static ContentManager contentManager;
+        public static Player mainPlayer;
 
         //Everybody needs a bit of entropy
         public static Random random;
@@ -35,6 +37,7 @@ namespace BigGameF2011
 
         public Shmup()
         {
+            contentManager = base.Content;
             collisions = new CollisionManager(this);
             this.Components.Add(collisions);
             collisions.Initialize();
@@ -60,10 +63,11 @@ namespace BigGameF2011
         protected override void Initialize()
         {
             GameObjects.Add(new Background(new Vector2(0, 0)));
-            GameObjects.Add(new Player(new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.9f), base.Content));
+            mainPlayer = new Player(new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.9f));
+            GameObjects.Add(mainPlayer);
 
-            GameObjects.Add(new Enemy(new Vector2(SCREEN_WIDTH / 3, SCREEN_HEIGHT * 0.2f), base.Content));
-            GameObjects.Add(new Laser(new Vector2(25, SCREEN_HEIGHT), CollisionManager.Side.Player));
+//            GameObjects.Add(new Enemy(new Vector2(SCREEN_WIDTH / 3, SCREEN_HEIGHT * 0.2f)));
+//            GameObjects.Add(new Laser(new Vector2(25, SCREEN_HEIGHT), CollisionManager.Side.Player));
             base.Initialize();
         }
 
@@ -98,7 +102,7 @@ namespace BigGameF2011
             // minimum, maximum time between spawning enemies
             if (Environment.TickCount - debugTimeElapsed > (random.Next(2000, 5000)))
             {
-                Enemy badguy = new Enemy(new Vector2(-100, -100), base.Content);
+                Enemy badguy = new Enemy(new Vector2(-100, -100));
                 badguy.Load(base.Content);
 
                 float x = (float)Shmup.random.NextDouble() * Shmup.SCREEN_WIDTH;

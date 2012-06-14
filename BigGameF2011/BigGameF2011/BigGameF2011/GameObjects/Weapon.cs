@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace BigGameF2011.GameObjects
 {
@@ -16,6 +17,8 @@ namespace BigGameF2011.GameObjects
         {
             speed = 10;
             damage = 5;
+            SoundEffect shotSound = Shmup.contentManager.Load<SoundEffect>("Sounds/30935__aust-paul__possiblelazer");
+            shotSound.Play(0.5f, 0f, 0f);
             if (_side == CollisionManager.Side.Player)
             {
                 textureFile = "Sprites/laserBlue";
@@ -33,6 +36,8 @@ namespace BigGameF2011.GameObjects
             textureFile = "Sprites/missile";
             speed = 5;
             damage = 20;
+            SoundEffect shotSound = Shmup.contentManager.Load<SoundEffect>("Sounds/47252__nthompson__rocketexpl");
+            shotSound.Play(0.5f, 0f, 0f);
         }
     }
 
@@ -42,6 +47,7 @@ namespace BigGameF2011.GameObjects
         protected String textureFile;
         protected int speed;
         protected int damage;
+
         public Weapon(Vector2 _pos, CollisionManager.Side _side) : base(_pos)
         {
             this.side = _side;
@@ -49,7 +55,6 @@ namespace BigGameF2011.GameObjects
 
         public override void Load(ContentManager Content)
         {
-//            texture = Content.Load<Texture2D>("Sprites/Weapon");
             texture = Content.Load<Texture2D>(textureFile);
             Debug.Assert((texture != null), "Weapon :: Error - Texture has not been provided");
             base.Load(Content);
@@ -70,16 +75,16 @@ namespace BigGameF2011.GameObjects
             {
                 return;
             }
-            Unload();
             base.OnCollision(damageTaken);
+            Unload();
         }
 
         public override void Update()
         {
-            Velocity = new Vector2(0, 0);
+            velocity = new Vector2(0, 0);
             base.Update();
-            if(Position.Y > Shmup.SCREEN_HEIGHT || Position.Y < 0 ||
-                Position.X > Shmup.SCREEN_WIDTH || Position.X < 0)
+            if(position.Y > Shmup.SCREEN_HEIGHT || position.Y < 0 ||
+                position.X > Shmup.SCREEN_WIDTH || position.X < 0)
             { // unload if weapon travels outside visible screen
                 this.Unload();
             }
@@ -89,14 +94,14 @@ namespace BigGameF2011.GameObjects
         {
             if (side == CollisionManager.Side.Player)
             {
-                Position.Y -= speed;
+                position.Y -= speed;
             }
             else if (side == CollisionManager.Side.Enemy)
             {
-                Position.Y += speed;
+                position.Y += speed;
             }
-            Rectangle r = new Rectangle((int)(Position.X - Size.X / 2), (int)(Position.Y - Size.Y / 2),
-                                        (int)Size.X, (int)Size.Y);
+            Rectangle r = new Rectangle((int)(position.X - size.X / 2), (int)(position.Y - size.Y / 2),
+                                        (int)size.X, (int)size.Y);
             Shmup.spriteBatch.Draw(texture, r, Color.White);
             base.Draw(gameTime);
         }
