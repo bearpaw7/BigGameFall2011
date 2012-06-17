@@ -177,11 +177,11 @@ namespace BigGameF2011.GameObjects
 
         private void aiKamikaze()
         {
-            if (position.X > Shmup.mainPlayer.GetPosition().X + 2)
+            if (position.X > Shmup.mainPlayer.GetPosition().X + 10)
             {
                 direction.X--;
             }
-            else if (position.X < Shmup.mainPlayer.GetPosition().X - 2)
+            else if (position.X < Shmup.mainPlayer.GetPosition().X - 10)
             {
                 direction.X++;
             }

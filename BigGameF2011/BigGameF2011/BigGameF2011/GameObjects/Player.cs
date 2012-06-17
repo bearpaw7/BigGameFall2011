@@ -21,7 +21,7 @@ namespace BigGameF2011.GameObjects
         //Data Members
         //      Controls
         Keys moveUP; Keys moveDN; Keys moveLT; Keys moveRT; Keys shoot;
-        KeyboardState lastKeyState;
+//        KeyboardState lastKeyState;
 
         //Sounds
         SoundEffect moveSound;
@@ -75,31 +75,29 @@ namespace BigGameF2011.GameObjects
             base.OnCollision(damageTaken);
         }
 
-        public override void Update()
+        private void keyboardInput()
         {
             KeyboardState keyState = Keyboard.GetState();
-            direction = Vector2.Zero;
-            int fireRate =(int) MathHelper.Clamp(250 / (kills + 1), 20, 300); // shots per second increase with kills
-            if (keyState.IsKeyDown(shoot) && (Environment.TickCount - timeLastFired > fireRate))//&& lastKeyState.IsKeyUp(shoot))
+            int fireRate = (int)MathHelper.Clamp(250 / (kills + 1), 20, 300); // shots per second increase with kills
+            if (Environment.TickCount - timeLastFired > fireRate)
             {
-                float barrelTip = this.GetPosition().Y - (texture.Height / 2) - 10;
-                Vector2 muzzle = new Vector2(this.GetPosition().X, barrelTip);
-                Laser shotLaser = new Laser(muzzle, CollisionManager.Side.Player);
-                shotLaser.Load(Shmup.contentManager);
-                Shmup.GameObjects.Add(shotLaser);
-                timeLastFired = Environment.TickCount;
+                if (keyState.IsKeyDown(shoot))//&& lastKeyState.IsKeyUp(shoot))
+                {
+                    float barrelTip = this.GetPosition().Y - (texture.Height / 2) - 10;
+                    Vector2 muzzle = new Vector2(this.GetPosition().X, barrelTip);
+                    Laser shotLaser = new Laser(muzzle, CollisionManager.Side.Player);
+                    shotLaser.Load(Shmup.contentManager);
+                    Shmup.GameObjects.Add(shotLaser);
+                    timeLastFired = Environment.TickCount;
+                }
             }
-
-            if (keyState.IsKeyDown(moveDN))     direction.Y++;
-            else if (keyState.IsKeyDown(moveUP))direction.Y--;
-            if (keyState.IsKeyDown(moveRT))     direction.X++;
-            else if (keyState.IsKeyDown(moveLT))direction.X--;
+            if (keyState.IsKeyDown(moveDN)) direction.Y++;
+            else if (keyState.IsKeyDown(moveUP)) direction.Y--;
+            if (keyState.IsKeyDown(moveRT)) direction.X++;
+            else if (keyState.IsKeyDown(moveLT)) direction.X--;
             direction.Normalize();
-
-            if (keyState.IsKeyUp(moveLT) && keyState.IsKeyUp(moveRT) &&
-                keyState.IsKeyUp(moveUP) && keyState.IsKeyUp(moveDN))
+            if (keyState.IsKeyUp(moveLT) && keyState.IsKeyUp(moveRT) && keyState.IsKeyUp(moveUP) && keyState.IsKeyUp(moveDN))
             {
-                velocity = Vector2.Zero;
                 moveLoop.Pause();
             }
             else
@@ -107,7 +105,53 @@ namespace BigGameF2011.GameObjects
                 velocity = direction * speed;
                 moveLoop.Play();
             }
-            lastKeyState = keyState;
+            //            lastKeyState = keyState;
+        }
+
+        private void gamepadInput()
+        {
+            GamePadState padState = GamePad.GetState(PlayerIndex.One);
+            int fireRate = (int)MathHelper.Clamp(250 / (kills + 1), 20, 300); // shots per second increase with kills
+            if (Environment.TickCount - timeLastFired > fireRate)
+            {
+                if (padState.Buttons.A == ButtonState.Pressed)
+                {
+                    float barrelTip = this.GetPosition().Y - (texture.Height / 2) - 10;
+                    Vector2 muzzle = new Vector2(this.GetPosition().X, barrelTip);
+                    Laser shotLaser = new Laser(muzzle, CollisionManager.Side.Player);
+                    shotLaser.Load(Shmup.contentManager);
+                    Shmup.GameObjects.Add(shotLaser);
+                    timeLastFired = Environment.TickCount;
+                }
+            }
+            if (padState.DPad.Down == ButtonState.Pressed) direction.Y++;
+            else if (padState.DPad.Up == ButtonState.Pressed) direction.Y--;
+            if (padState.DPad.Right == ButtonState.Pressed) direction.X++;
+            else if (padState.DPad.Left == ButtonState.Pressed) direction.X--;
+            direction.Normalize();
+            if (padState.IsButtonUp(Buttons.DPadLeft) && padState.IsButtonUp(Buttons.DPadRight) &&
+                 padState.IsButtonUp(Buttons.DPadUp) && padState.IsButtonUp(Buttons.DPadDown))
+            {
+                moveLoop.Pause();
+            }
+            else
+            {
+                velocity = direction * speed;
+                moveLoop.Play();
+            }
+        }
+
+        public override void Update()
+        {
+            direction = Vector2.Zero;
+            velocity = Vector2.Zero;
+
+            #if WINDOWS
+                keyboardInput();
+            #elif XBOX
+                gamepadInput();
+            #endif
+
             base.Update();
             
             //Clamp player's movements so that they can't go off screen.
