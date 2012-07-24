@@ -49,8 +49,7 @@ namespace BigGameF2011.GameObjects
             : base(_pos, _side)
         {
             closestEnemyOnCreate = Shmup.GameObjects.Where(e => e is Enemy).OrderByDescending(e => Vector2.Distance(e.GetPosition(), this.GetPosition())).FirstOrDefault() as Enemy;
-            //textureFile = "Sprites/HeatSeekingMissile"; //Does not work!
-            textureFile = "Sprites/missile";
+            textureFile = "Sprites/HeatSeekingMissile";
             speed = 5;
             damage = 20;
             SoundEffect shotSound = Shmup.contentManager.Load<SoundEffect>("Sounds/47252__nthompson__rocketexpl");
