@@ -20,7 +20,7 @@ namespace BigGameF2011.GameObjects
     {
         //Data Members
         //      Controls
-        Keys moveUP; Keys moveDN; Keys moveLT; Keys moveRT; Keys shoot;
+        Keys moveUP; Keys moveDN; Keys moveLT; Keys moveRT; Keys shoot; Keys weapon1;
 //        KeyboardState lastKeyState;
 
         //Sounds
@@ -28,22 +28,24 @@ namespace BigGameF2011.GameObjects
         SoundEffectInstance moveLoop;
 
         static int kills;
-        int timeLastFired;
+        int timeLastFiredLaser; int timeLastFiredMissile;
 
         //Constructor
         public Player(Vector2 position) : base(position)
         {
             speed = 10;
             //We can later add a parameter to change controls, but use KB for now
-            moveUP = Keys.Up;
-            moveDN = Keys.Down;
-            moveLT = Keys.Left;
-            moveRT = Keys.Right;
-            shoot = Keys.Space;
+            moveUP  = Keys.Up;
+            moveDN  = Keys.Down;
+            moveLT  = Keys.Left;
+            moveRT  = Keys.Right;
+            shoot   = Keys.Space;
+            weapon1 = Keys.D1;
 
             health = 100;
             kills = 0;
-            timeLastFired = 0;
+            timeLastFiredLaser = 0;
+            timeLastFiredMissile = 0;
         }
 
         //Public Functions
@@ -79,7 +81,7 @@ namespace BigGameF2011.GameObjects
         {
             KeyboardState keyState = Keyboard.GetState();
             int fireRate = (int)MathHelper.Clamp(250 / (kills + 1), 20, 300); // shots per second increase with kills
-            if (Environment.TickCount - timeLastFired > fireRate)
+            if (Environment.TickCount - timeLastFiredLaser > fireRate)
             {
                 if (keyState.IsKeyDown(shoot))//&& lastKeyState.IsKeyUp(shoot))
                 {
@@ -88,7 +90,21 @@ namespace BigGameF2011.GameObjects
                     Laser shotLaser = new Laser(muzzle, CollisionManager.Side.Player);
                     shotLaser.Load(Shmup.contentManager);
                     Shmup.GameObjects.Add(shotLaser);
-                    timeLastFired = Environment.TickCount;
+                    timeLastFiredLaser = Environment.TickCount;
+                }
+            }
+
+            /*Fire weapon 1 */ 
+            if(Environment.TickCount - timeLastFiredMissile > 500)
+            {
+                if (keyState.IsKeyDown(weapon1))
+                {
+                    float barrelTip = this.GetPosition().Y - (texture.Height / 2) - 10;
+                    Vector2 muzzle = new Vector2(this.GetPosition().X, barrelTip);
+                    HeatSeekingMissile shotMissle = new HeatSeekingMissile(muzzle, CollisionManager.Side.Player);
+                    shotMissle.Load(Shmup.contentManager);
+                    Shmup.GameObjects.Add(shotMissle);
+                    timeLastFiredMissile = Environment.TickCount;
                 }
             }
             if (keyState.IsKeyDown(moveDN)) direction.Y++;
@@ -112,7 +128,7 @@ namespace BigGameF2011.GameObjects
         {
             GamePadState padState = GamePad.GetState(PlayerIndex.One);
             int fireRate = (int)MathHelper.Clamp(250 / (kills + 1), 20, 300); // shots per second increase with kills
-            if (Environment.TickCount - timeLastFired > fireRate)
+            if (Environment.TickCount - timeLastFiredLaser > fireRate)
             {
                 if (padState.Buttons.A == ButtonState.Pressed)
                 {
@@ -121,8 +137,18 @@ namespace BigGameF2011.GameObjects
                     Laser shotLaser = new Laser(muzzle, CollisionManager.Side.Player);
                     shotLaser.Load(Shmup.contentManager);
                     Shmup.GameObjects.Add(shotLaser);
-                    timeLastFired = Environment.TickCount;
+                    timeLastFiredLaser = Environment.TickCount;
                 }
+            }
+            /*Fire weapon 1 */
+            if (padState.Buttons.X == ButtonState.Pressed)
+            {
+                float barrelTip = this.GetPosition().Y - (texture.Height / 2) - 10;
+                Vector2 muzzle = new Vector2(this.GetPosition().X, barrelTip);
+                Missile shotMissle = new Missile(muzzle, CollisionManager.Side.Player);
+                shotMissle.Load(Shmup.contentManager);
+                Shmup.GameObjects.Add(shotMissle);
+                //timeLastFiredLaser = Environment.TickCount;
             }
             if (padState.DPad.Down == ButtonState.Pressed) direction.Y++;
             else if (padState.DPad.Up == ButtonState.Pressed) direction.Y--;
