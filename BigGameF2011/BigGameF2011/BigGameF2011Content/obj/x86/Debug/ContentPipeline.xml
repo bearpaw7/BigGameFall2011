@@ -163,6 +163,15 @@
       <Output>C:\Users\Jason\Documents\TAGD\New folder\BigGameF2011\bin\x86\Debug\Content\Sprites\SpriteFont1.xnb</Output>
       <Time>2012-07-24T12:50:25.5936181-05:00</Time>
     </Item>
+    <Item>
+      <Source>Sprites\HeatSeekingMissile.png</Source>
+      <Name>Sprites\HeatSeekingMissile</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jason\Documents\TAGD\New folder\BigGameF2011\bin\x86\Debug\Content\Sprites\HeatSeekingMissile.xnb</Output>
+      <Time>2012-07-22T20:43:01.5696406-05:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>

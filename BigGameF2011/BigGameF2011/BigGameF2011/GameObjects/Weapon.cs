@@ -64,9 +64,13 @@ namespace BigGameF2011.GameObjects
                 return;
             }
 
-            Rectangle r = new Rectangle((int)(position.X - size.X / 2), (int)(position.Y - size.Y / 2),
+            Rectangle rec = new Rectangle((int)(position.X - size.X / 2), (int)(position.Y - size.Y / 2),
                                         (int)size.X, (int)size.Y);
-            Shmup.spriteBatch.Draw(texture, r, Color.White);
+
+            var rotation = Math.Acos(Vector2.Dot(new Vector2(0, 1), Vector2.Normalize(velocity))) + Math.PI;
+            if (velocity.X > 0) rotation = -rotation;
+
+            Shmup.spriteBatch.Draw(texture, rec, null, Color.White, (float)rotation, new Vector2(), new SpriteEffects(), 0);
         }
 
         public override void Update()

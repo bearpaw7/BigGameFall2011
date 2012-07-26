@@ -35,3 +35,4 @@ C:\Users\Jason\Documents\TAGD\New folder\BigGameF2011\obj\x86\Debug\ResolveAssem
 C:\Users\Jason\Documents\TAGD\New folder\BigGameF2011\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Jason\Documents\TAGD\New folder\BigGameF2011\obj\x86\Debug\BigGameF2011.exe
 C:\Users\Jason\Documents\TAGD\New folder\BigGameF2011\obj\x86\Debug\BigGameF2011.pdb
+C:\Users\Jason\Documents\TAGD\New folder\BigGameF2011\bin\x86\Debug\Content\Sprites\HeatSeekingMissile.xnb
